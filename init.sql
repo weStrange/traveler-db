@@ -21,7 +21,7 @@ ALTER TABLE public.traveler_user
 
 CREATE TABLE public.personal_card
 (
- id integer NOT NULL,
+ id bigint NOT NULL,
  start_time date NOT NULL,
  end_time date NOT NULL,
  lon numeric(10,0),
@@ -40,11 +40,12 @@ CREATE TABLE public.personal_card
 
 CREATE TABLE public.group_card
 (
- id integer NOT NULL,
+ id bigint NOT NULL,
  start_time date NOT NULL,
  end_time date NOT NULL,
  lon numeric(10,0),
  lat numeric(10,0),
+ owner_fk character(80) NOT NULL,
  CONSTRAINT group_card_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -55,7 +56,7 @@ ALTER TABLE public.group_card
 
 CREATE TABLE public.card_user
 (
- card_id integer,
+ card_id bigint,
  username character varying(80),
  CONSTRAINT card_user_card_id_fkey FOREIGN KEY (card_id)
      REFERENCES public.group_card (id) MATCH SIMPLE
