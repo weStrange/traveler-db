@@ -24,9 +24,10 @@ CREATE TABLE public.personal_card
  id bigint NOT NULL,
  start_time date NOT NULL,
  end_time date NOT NULL,
- lon numeric(10,0),
- lat numeric(10,0),
+ lon numeric(10,7),
+ lat numeric(10,7),
  username_fk character varying(80) NOT NULL,
+ active boolean,
  CONSTRAINT personal_card_pkey PRIMARY KEY (id),
  CONSTRAINT personal_card_username_fk_fkey FOREIGN KEY (username_fk)
       REFERENCES public.traveler_user (username) MATCH SIMPLE
@@ -43,9 +44,10 @@ CREATE TABLE public.group_card
  id bigint NOT NULL,
  start_time date NOT NULL,
  end_time date NOT NULL,
- lon numeric(10,0),
- lat numeric(10,0),
+ lon numeric(10,7),
+ lat numeric(10,7),
  owner_fk character(80) NOT NULL,
+ active boolean,
  CONSTRAINT group_card_pkey PRIMARY KEY (id)
 )
 WITH (
