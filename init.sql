@@ -70,3 +70,18 @@ WITH (
 );
 ALTER TABLE public.card_user
  OWNER TO postgres;
+
+ CREATE TABLE public.user_credentials
+ (
+  username character varying(80),
+  password character varying(160),
+  active boolean,
+  CONSTRAINT user_credentials_username_fkey FOREIGN KEY (username)
+      REFERENCES public.traveler_user (username) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+ )
+ WITH (
+  OIDS=FALSE
+ );
+ ALTER TABLE public.user_credentials
+  OWNER TO postgres;
