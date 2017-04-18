@@ -32,12 +32,12 @@ CREATE TABLE public.personal_card
  CONSTRAINT personal_card_username_fk_fkey FOREIGN KEY (username_fk)
       REFERENCES public.traveler_user (username) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
- )
- WITH (
+)
+WITH (
   OIDS=FALSE
- );
- ALTER TABLE public.personal_card
-  OWNER TO postgres;
+);
+ALTER TABLE public.personal_card
+ OWNER TO postgres;
 
 CREATE TABLE public.group_card
 (
@@ -53,6 +53,7 @@ CREATE TABLE public.group_card
 WITH (
  OIDS=FALSE
 );
+
 ALTER TABLE public.group_card
  OWNER TO postgres;
 
@@ -73,33 +74,35 @@ WITH (
 ALTER TABLE public.card_user
  OWNER TO postgres;
 
- CREATE TABLE public.user_credentials
- (
-  username character varying(80),
-  password character varying(160),
-  active boolean,
-  CONSTRAINT user_credentials_username_fkey FOREIGN KEY (username)
-      REFERENCES public.traveler_user (username) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
- )
- WITH (
+CREATE TABLE public.user_credentials
+(
+ username character varying(80),
+ password character varying(160),
+ active boolean,
+ CONSTRAINT user_credentials_username_fkey FOREIGN KEY (username)
+     REFERENCES public.traveler_user (username) MATCH SIMPLE
+     ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
   OIDS=FALSE
- );
- ALTER TABLE public.user_credentials
+);
+ALTER TABLE public.user_credentials
   OWNER TO postgres;
 
 
-create table public.mate_matcher (
-card1_id bigint NOT NULL,
-card1_type int NOT NULL, 
-card1_decision boolean NOT NULL,
-card2_id bigint NOT NULL,
-card2_type int NOT NULL,
-card2_decision boolean NOT NULL,
-CONSTRAINT mate_matcher_pk PRIMARY KEY (card1_id, card1_type, card2_id, card2_type)
+CREATE TABLE public.mate_matcher 
+(
+ card1_id bigint NOT NULL,
+ card1_type int NOT NULL, 
+ card1_decision boolean NOT NULL,
+ card2_id bigint NOT NULL,
+ card2_type int NOT NULL,
+ card2_decision boolean NOT NULL,
+ CONSTRAINT mate_matcher_pk PRIMARY KEY (card1_id, card1_type, card2_id, card2_type)
 )
 WITH (
  OIDS=FALSE
 );
-
+ALTER TABLE public.mate_matcher
+ OWNER TO postgres;
 
