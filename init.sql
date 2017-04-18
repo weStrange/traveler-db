@@ -87,3 +87,19 @@ ALTER TABLE public.card_user
  );
  ALTER TABLE public.user_credentials
   OWNER TO postgres;
+
+
+create table public.mate_matcher (
+card1_id bigint NOT NULL,
+card1_type int NOT NULL, 
+card1_decision boolean NOT NULL,
+card2_id bigint NOT NULL,
+card2_type int NOT NULL,
+card2_decision boolean NOT NULL,
+CONSTRAINT mate_matcher_pk PRIMARY KEY (card1_id, card1_type, card2_id, card2_type)
+)
+WITH (
+ OIDS=FALSE
+);
+
+
