@@ -87,3 +87,19 @@ ALTER TABLE public.card_user
  );
  ALTER TABLE public.user_credentials
   OWNER TO postgres;
+
+
+CREATE TABLE public.user_photo 
+(
+ username character varying(80), 
+ photo oid, 
+ CONSTRAINT user_photo_username_fkey FOREIGN KEY (username) 
+     REFERENCES public.traveler_user(username) MATCH SIMPLE
+     ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+ OIDS=FALSE
+);
+ALTER TABLE public.user_photo
+ OWNER TO postgres;
+
