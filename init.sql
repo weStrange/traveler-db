@@ -19,9 +19,13 @@ WITH (
 ALTER TABLE public.traveler_user
  OWNER TO postgres;
 
+CREATE SEQUENCE public.personal_card_id_seq;
+ALTER SEQUENCE public.personal_card_id_seq INCREMENT BY 2 START WITH 2 RESTART WITH 2;
+ALTER SEQUENCE public.personal_card_id_seq OWNER TO postgres;
+
 CREATE TABLE public.personal_card
 (
- id bigint NOT NULL,
+ id bigint NOT NULL DEFAULT nextval('public.personal_card_id_seq'),
  start_time date NOT NULL,
  end_time date NOT NULL,
  lon numeric(10,7),
@@ -39,9 +43,13 @@ CREATE TABLE public.personal_card
  ALTER TABLE public.personal_card
   OWNER TO postgres;
 
+CREATE SEQUENCE public.group_card_id_seq;
+ALTER SEQUENCE public.group_card_id_seq INCREMENT BY 2 START WITH 1 RESTART WITH 1;
+ALTER SEQUENCE public.group_card_id_seq OWNER TO postgres;
+
 CREATE TABLE public.group_card
 (
- id bigint NOT NULL,
+ id bigint NOT NULL DEFAULT nextval('public.group_card_id_seq'),
  start_time date NOT NULL,
  end_time date NOT NULL,
  lon numeric(10,7),
@@ -101,5 +109,19 @@ WITH (
  OIDS=FALSE
 );
 ALTER TABLE public.user_photo
+ OWNER TO postgres;
+
+
+CREATE TABLE public.match
+(
+ liker_card_id bigint NOT NULL,
+ liked_card_id bigint NOT NULL,
+ like_decision boolean NOT NULL,
+ CONSTRAINT traveler_match_pk PRIMARY KEY (liker_card_id, liked_card_id)
+)
+WITH (
+ OIDS=FALSE
+);
+ALTER TABLE public.match 
  OWNER TO postgres;
 
