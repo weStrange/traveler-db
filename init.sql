@@ -19,22 +19,32 @@ WITH (
 ALTER TABLE public.traveler_user
  OWNER TO postgres;
 
-CREATE SEQUENCE public.personal_card_id_seq;
-ALTER SEQUENCE public.personal_card_id_seq INCREMENT BY 2 START WITH 2 RESTART WITH 2;
-ALTER SEQUENCE public.personal_card_id_seq OWNER TO postgres;
+ CREATE TABLE public.card
+ (
+   id bigint NOT NULL,
+   start_time date NOT NULL,
+   end_time date NOT NULL,
+   lon numeric(10,7),
+   lat numeric(10,7),
+   owner_fk character varying(80) NOT NULL,
+   active boolean,
+   CONSTRAINT card_pkey PRIMARY KEY (id),
+   CONSTRAINT card_owner_fk_fkey FOREIGN KEY (owner_fk)
+        REFERENCES public.traveler_user (username) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION
+ )
+ WITH (
+  OIDS=FALSE
+ );
+ ALTER TABLE public.card
+  OWNER TO postgres;
 
 CREATE TABLE public.personal_card
 (
- id bigint NOT NULL DEFAULT nextval('public.personal_card_id_seq'),
- start_time date NOT NULL,
- end_time date NOT NULL,
- lon numeric(10,7),
- lat numeric(10,7),
- username_fk character varying(80) NOT NULL,
- active boolean,
+ id bigint NOT NULL,
  CONSTRAINT personal_card_pkey PRIMARY KEY (id),
- CONSTRAINT personal_card_username_fk_fkey FOREIGN KEY (username_fk)
-      REFERENCES public.traveler_user (username) MATCH SIMPLE
+ CONSTRAINT personal_card_id_fkey FOREIGN KEY (id)
+      REFERENCES public.card (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
  )
  WITH (
@@ -43,20 +53,13 @@ CREATE TABLE public.personal_card
  ALTER TABLE public.personal_card
   OWNER TO postgres;
 
-CREATE SEQUENCE public.group_card_id_seq;
-ALTER SEQUENCE public.group_card_id_seq INCREMENT BY 2 START WITH 1 RESTART WITH 1;
-ALTER SEQUENCE public.group_card_id_seq OWNER TO postgres;
-
 CREATE TABLE public.group_card
 (
- id bigint NOT NULL DEFAULT nextval('public.group_card_id_seq'),
- start_time date NOT NULL,
- end_time date NOT NULL,
- lon numeric(10,7),
- lat numeric(10,7),
- owner_fk character(80) NOT NULL,
- active boolean,
- CONSTRAINT group_card_pkey PRIMARY KEY (id)
+  id bigint NOT NULL,
+  CONSTRAINT group_card_pkey PRIMARY KEY (id),
+  CONSTRAINT group_card_id_fkey FOREIGN KEY (id)
+       REFERENCES public.card (id) MATCH SIMPLE
+       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (
  OIDS=FALSE
@@ -97,11 +100,11 @@ ALTER TABLE public.card_user
   OWNER TO postgres;
 
 
-CREATE TABLE public.user_photo 
+CREATE TABLE public.user_photo
 (
- username character varying(80), 
- photo oid, 
- CONSTRAINT user_photo_username_fkey FOREIGN KEY (username) 
+ username character varying(80),
+ photo oid,
+ CONSTRAINT user_photo_username_fkey FOREIGN KEY (username)
      REFERENCES public.traveler_user(username) MATCH SIMPLE
      ON UPDATE NO ACTION ON DELETE NO ACTION
 )
@@ -111,17 +114,21 @@ WITH (
 ALTER TABLE public.user_photo
  OWNER TO postgres;
 
-
 CREATE TABLE public.match
 (
  liker_card_id bigint NOT NULL,
  liked_card_id bigint NOT NULL,
  like_decision boolean NOT NULL,
- CONSTRAINT traveler_match_pk PRIMARY KEY (liker_card_id, liked_card_id)
+ CONSTRAINT traveler_match_pk PRIMARY KEY (liker_card_id, liked_card_id),
+ CONSTRAINT match_liker_id_fkey FOREIGN KEY (liker_card_id)
+     REFERENCES public.card(id) MATCH SIMPLE
+     ON UPDATE NO ACTION ON DELETE NO ACTION,
+ CONSTRAINT match_liked_id_fkey FOREIGN KEY (liked_card_id)
+     REFERENCES public.card(id) MATCH SIMPLE
+     ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 WITH (
  OIDS=FALSE
 );
-ALTER TABLE public.match 
+ALTER TABLE public.match
  OWNER TO postgres;
-
