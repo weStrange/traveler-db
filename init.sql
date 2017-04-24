@@ -19,15 +19,20 @@ WITH (
 ALTER TABLE public.traveler_user
  OWNER TO postgres;
 
+CREATE SEQUENCE public.card_id_seq;
+ALTER SEQUENCE public.card_id_seq
+ OWNER TO postgres;
+
  CREATE TABLE public.card
  (
-   id bigint NOT NULL,
+   id bigint NOT NULL DEFAULT nextval('public.card_id_seq'),
    start_time date NOT NULL,
    end_time date NOT NULL,
    lon numeric(10,7),
    lat numeric(10,7),
    owner_fk character varying(80) NOT NULL,
    active boolean,
+   CONSTRAINT check_card_date check ( start_time <= end_time),
    CONSTRAINT card_pkey PRIMARY KEY (id),
    CONSTRAINT card_owner_fk_fkey FOREIGN KEY (owner_fk)
         REFERENCES public.traveler_user (username) MATCH SIMPLE
