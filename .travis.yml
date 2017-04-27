@@ -1,13 +1,9 @@
+sudo: required
+
 install: true
 
 services:
   - docker
 
 script:
-- docker build -t alekster/traveler-db:v_$TRAVIS_BUILD_NUMBER .
-
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "dev" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push alekster/traveler-db;
-    fi
+  - scripts/staging/docker_push.sh
