@@ -1,0 +1,9 @@
+sudo: required
+
+install: true
+
+services:
+  - docker
+
+script:
+  - scripts/staging/docker_push.sh
