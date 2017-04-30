@@ -8,7 +8,6 @@ CREATE TABLE public.traveler_user
  address character varying(80),
  city character varying(80),
  country character varying(80),
- photo oid,
  first_name character varying(80),
  last_name character varying(80),
  CONSTRAINT traveler_user_pkey PRIMARY KEY (username)
@@ -32,6 +31,8 @@ ALTER SEQUENCE public.card_id_seq
    lat numeric(10,7),
    owner_fk character varying(80) NOT NULL,
    active boolean,
+   title character varying(80),
+   description character varying(700),
    CONSTRAINT check_card_date check ( start_time <= end_time),
    CONSTRAINT card_pkey PRIMARY KEY (id),
    CONSTRAINT card_owner_fk_fkey FOREIGN KEY (owner_fk)
@@ -118,6 +119,20 @@ WITH (
 );
 ALTER TABLE public.user_photo
  OWNER TO postgres;
+
+CREATE TABLE public.card_photo
+(
+card_id bigint,
+photo oid,
+CONSTRAINT card_photo_fkey FOREIGN KEY (card_id)
+    REFERENCES public.card(id) MATCH SIMPLE
+    ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+OIDS=FALSE
+);
+ALTER TABLE public.card_photo
+OWNER TO postgres;
 
 CREATE TABLE public.match
 (
