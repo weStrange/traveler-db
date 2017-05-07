@@ -152,3 +152,54 @@ WITH (
 );
 ALTER TABLE public.match
  OWNER TO postgres;
+
+CREATE TABLE public.chat_room
+(
+  id bigint NOT NULL,
+  active boolean NOT NULL,
+  creation_time date NOT NULL,
+  CONSTRAINT chat_room_pk PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.chat_room
+OWNER TO postgres;
+
+CREATE TABLE public.chat_room_user
+(
+  chat_room_id bigint NOT NULL,
+  username character varying(80),
+  CONSTRAINT chat_room_user_chat_room_id_fkey FOREIGN KEY (chat_room_id)
+      REFERENCES public.chat_room(id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT chat_room_user_username_fkey FOREIGN KEY (username)
+      REFERENCES public.traveler_user(username) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.chat_room_user
+OWNER TO postgres;
+
+CREATE TABLE public.message
+(
+  id bigint NOT NULL,
+  message_text character varying(500) NOT NULL,
+  creation_time date NOT NULL,
+  username character varying(80),
+  chat_room_id bigint NOT NULL,
+  CONSTRAINT message_pk PRIMARY KEY (id),
+  CONSTRAINT message_chat_room_id_fkey FOREIGN KEY (chat_room_id)
+      REFERENCES public.chat_room(id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT message_username_fkey FOREIGN KEY (username)
+      REFERENCES public.traveler_user(username) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.chat_room
+OWNER TO postgres;
