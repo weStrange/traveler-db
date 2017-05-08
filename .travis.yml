@@ -5,5 +5,8 @@ install: true
 services:
   - docker
 
+before_install:
+  - . ./scripts/env_setup.sh
+
 script:
-  - scripts/staging/docker_push.sh
+  - scripts/docker_push.sh
