@@ -1,0 +1,12 @@
+sudo: required
+
+install: true
+
+services:
+  - docker
+
+before_install:
+  - . ./scripts/env_setup.sh
+
+script:
+  - scripts/docker_push.sh
