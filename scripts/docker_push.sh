@@ -6,7 +6,7 @@ docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 # Push only if it's not a pull request
 if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   # Push only if we're testing the master branch
-  if [ "$TRAVIS_BRANCH" == "dev" ]; then
+  if [ "$TRAVIS_BRANCH" == "dev" ] || [ "$TRAVIS_BRANCH" == "master" ]; then
 
     # Build and push
     docker build -t $IMAGE_NAME .
