@@ -7,8 +7,10 @@ if [ "$TRAVIS_BRANCH" == "dev" ]; then
     echo $STAGING_DOCKER_USERNAME
     export DOCKER_USERNAME=$STAGING_DOCKER_USERNAME
     export DOCKER_PASSWORD=$STAGING_DOCKER_PASSWORD
-    export IMAGE_NAME="traveler-db"
-    export REMOTE_IMAGE_URL="alekster/traveler-db"
+    #export IMAGE_NAME="traveler-db"
+    #export REMOTE_IMAGE_URL="alekster/traveler-db"
+    export IMAGE_NAME="traveler-back-db"
+    export REMOTE_IMAGE_URL="kujiraoo/traveler-back-db"
 elif [ "$TRAVIS_BRANCH" == "master" ]; then
     echo "Setting up production env vars"
     export DOCKER_USERNAME=$PRODUCTION_DOCKER_USERNAME
